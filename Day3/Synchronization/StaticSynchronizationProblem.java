@@ -2,8 +2,8 @@ package com.prathis.Synchronization;
 
 class WithoutStaticSyncronization{
 
-    void printThread(String thread){
-        synchronized (this){
+    synchronized static void printThread(String thread){
+
             for (int iteration = 0; iteration <5; iteration++){
                 System.out.println(thread);
                 try{
@@ -13,25 +13,9 @@ class WithoutStaticSyncronization{
                     System.err.println(e.getMessage());
                 }
             }
-        }
-
 
 
     }
-//    synchronized  static void printThread(String thread){
-//
-//            for (int iteration = 0; iteration <5; iteration++){
-//                System.out.println(thread);
-//                try{
-//                    Thread.sleep(800);
-//                }
-//                catch (Exception e){
-//                    System.err.println(e.getMessage());
-//                }
-//            }
-//
-//
-//    }
 
 
 
