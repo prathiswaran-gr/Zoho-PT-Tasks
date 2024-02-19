@@ -16,3 +16,5 @@ public class CheckIn {
     }
 }
 
+/// sudo service redis-server stop
+

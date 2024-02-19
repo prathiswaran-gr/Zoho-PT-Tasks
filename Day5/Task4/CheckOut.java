@@ -25,7 +25,6 @@ public class CheckOut {
             System.out.println("Error: No check-in time found. Please check in first.");
         } else {
             System.out.println("Checked out at: " + checkoutTime);
-
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             try {
                 Date checkinDate = dateFormat.parse(checkinTime);
