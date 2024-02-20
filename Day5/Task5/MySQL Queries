@@ -1,0 +1,41 @@
+CREATE DATABASE Zoho; -- Creating a new Schema
+
+USE Zoho; -- To use the schema by default
+
+
+-- Creating a new tables/relations
+CREATE TABLE Users(
+  id VARCHAR(20) NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+  );
+  
+CREATE TABLE Attendences(
+  id VARCHAR(20) NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+  );
+
+CREATE TABLE Attendences (
+  id INT NOT NULL AUTO_INCREMENT,
+  emp_id VARCHAR(20) NOT NULL,
+  emp_status ENUM('check-in', 'check_out') NOT NULL,
+  datetime_stamp DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (emp_id) REFERENCES Users(id)
+);
+
+-- CHECK-IN Query
+INSERT INTO Attendences (emp_id, emp_status, datetime_stamp) VALUES("#id", 'check_in', now());
+
+-- CHECK-OUT Query
+INSERT INTO Attendences (emp_id, emp_status, datetime_stamp) VALUES("#id", 'check_out', now());
+
+-- REPORT QUERY
+SELECT emp_id AS Employee_id, user_name AS Employee_name, emp_status AS Status, datetime_stamp AS Datetime 
+FROM Attendences a 
+JOIN Users u 
+ON 
+a.emp_id = u.user_id;
+
+

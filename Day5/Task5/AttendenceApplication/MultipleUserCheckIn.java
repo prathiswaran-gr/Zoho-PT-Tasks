@@ -20,14 +20,18 @@ public class MultipleUserCheckIn extends Thread {
     	MySQLConnection connection = new MySQLConnection();
         String checkinTime = getCurrentTime();
         String hashKey = user.getUserId();
-        HashMap<String, String> hmap = new HashMap< >();
+        HashMap<String, String> hmap = new HashMap<>();
         hmap.put("check-in",checkinTime);
         try {
-            System.out.println(connection.insertIntoDatabase(Queries.checkInQuery(user.getUserId()),credentials));
+            System.out.println(connection.insertIntoDatabase(Queries.checkInQuery(),credentials,user.getUserId()));
+            jedis.hmset(hashKey,hmap);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        jedis.hmset(hashKey,hmap);
+        finally {
+            jedis.close();
+        }
+
         System.out.println("User " + user.getUserId() + " checked in at: " + getCurrentTime());
     }
 

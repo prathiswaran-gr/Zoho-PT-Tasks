@@ -3,16 +3,18 @@ import redis.clients.jedis.Jedis;
 import java.util.Scanner;
 
 public class MultipleUserCheckInCheckOutMain{
-    public static void punchInLogic (int numberOfUsers, User[] users, Jedis jedis){
+    public static void punchInLogic (int numberOfUsers, User[] users){
         for (int i = 0; i < numberOfUsers; i++) {
-
+            Jedis jedis = new Jedis("localhost",6379);
             MultipleUserCheckIn checkInThread = new MultipleUserCheckIn(users[i], jedis);
             checkInThread.start();
         }
     }
 
-    public static void punchOutLogic (int numberOfUsers, User[] users, Jedis jedis){
+    public static void punchOutLogic (int numberOfUsers, User[] users){
+
         for (int i = 0; i < numberOfUsers; i++) {
+            Jedis jedis = new Jedis("localhost",6379);
             MultipleUserCheckOut checkOutThread = new MultipleUserCheckOut(users[i], jedis);
             checkOutThread.start();
         }
@@ -20,9 +22,6 @@ public class MultipleUserCheckInCheckOutMain{
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        Jedis jedis = new Jedis("localhost", 6379);
-
         System.out.print("Enter the number of users: ");
         int numberOfUsers = scanner.nextInt();
         User[] users = new User[numberOfUsers];
@@ -37,24 +36,19 @@ public class MultipleUserCheckInCheckOutMain{
                 choice = scanner.nextInt();
                 switch (choice){
                     case 1 :
-                        punchInLogic( numberOfUsers,users,jedis);
 
+                        punchInLogic( numberOfUsers,users);
                         break;
                     case 2:
-                        punchOutLogic(numberOfUsers, users, jedis);
-
+                        punchOutLogic(numberOfUsers, users);
                         break;
                     default:
                         System.out.println("Quitting application");
                 }
             } while(choice != 3);
-
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-        }
-        finally{
-            jedis.close();
         }
     }
 }

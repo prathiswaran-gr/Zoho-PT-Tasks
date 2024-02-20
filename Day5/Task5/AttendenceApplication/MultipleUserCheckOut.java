@@ -35,21 +35,19 @@ public class MultipleUserCheckOut extends Thread {
 
                 System.out.println("User " + user.getUserId() + " checked out at: " + checkoutTime);
 
-//            long elapsedMilliseconds = getTimeDifference(checkinTime, checkoutTime);
-//            long elapsedSeconds = elapsedMilliseconds / 1000;
-//            long hours = elapsedSeconds / 3600;
                 try {
-                    System.out.println( connection.insertIntoDatabase(Queries.checkOutQuery(user.getUserId()),credentials));
-                   jedis.hmset(hashKey,hmap);
+                    System.out.println( connection.insertIntoDatabase(Queries.checkOutQuery(),credentials,user.getUserId()));
+                    jedis.hmset(hashKey,hmap);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-
-//            System.out.println("User " + user.getUserId() + " worked for: " + hours + " hours");
             }
         }
         catch (Exception e){
             e.printStackTrace();
+        }
+        finally {
+            jedis.close();
         }
     }
 
@@ -58,10 +56,5 @@ public class MultipleUserCheckOut extends Thread {
         return currentDate.toString();
     }
 
-    private long getTimeDifference(String startTime, String endTime) {
-        java.time.LocalDateTime startDateTime = java.time.LocalDateTime.parse(startTime);
-        java.time.LocalDateTime endDateTime = java.time.LocalDateTime.parse(endTime);
-        return java.time.Duration.between(startDateTime, endDateTime).toMillis();
-    }
 }
 

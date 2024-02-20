@@ -11,18 +11,19 @@ import java.io.IOException;
 
 public class MySQLConnection {
     private Connection connection;
-     private Statement statement;
+     private PreparedStatement statement;
      private ResultSet resultSet;
      private FileOutputStream fileOut;
      private  HSSFWorkbook workbook;
 
 
 
-    public String insertIntoDatabase(String query, MySQLCredentials credentials) throws SQLException {
+    public String insertIntoDatabase(String query, MySQLCredentials credentials, String userId) throws SQLException {
         try {
             connection = DriverManager.getConnection(credentials.getUrl(), credentials.getUsername(), credentials.getPassword());
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
+            statement = connection.prepareStatement(query);
+            statement.setString(1,userId);
+            statement.executeUpdate();
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -41,13 +42,13 @@ public class MySQLConnection {
             workbook = new HSSFWorkbook();
             HSSFSheet sheet = workbook.createSheet("zoho-checkin-checkout");
             HSSFRow rowhead = sheet.createRow((short)rowIndex++);
-            rowhead.createCell(0).setCellValue("#");
-            rowhead.createCell(1).setCellValue("id");
+            rowhead.createCell(0).setCellValue("id");
+            rowhead.createCell(1).setCellValue("name");
             rowhead.createCell(2).setCellValue("status");
             rowhead.createCell(3).setCellValue("timestamp");
             connection = DriverManager.getConnection(credentials.getUrl(), credentials.getUsername(), credentials.getPassword());
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 HSSFRow row = sheet.createRow((short)rowIndex++); // To create new rows
