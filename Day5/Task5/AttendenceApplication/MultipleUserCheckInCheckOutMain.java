@@ -32,20 +32,22 @@ public class MultipleUserCheckInCheckOutMain{
         try{
             int choice;
             do{
-                System.out.print("Enter your choice to check-in / check-out :\n 1. Check-in\n 2. Check-out\n 3. Quit\n");
+                System.out.print("Enter your choice to check-in / check-out :\n 1. Check-in\n 2. Check-out\n 3. Generate log into sheet\n 4. Quit\n");
                 choice = scanner.nextInt();
                 switch (choice){
                     case 1 :
-
                         punchInLogic( numberOfUsers,users);
                         break;
                     case 2:
                         punchOutLogic(numberOfUsers, users);
                         break;
+                    case 3:
+                        Report.generateReport();
+                        break;
                     default:
                         System.out.println("Quitting application");
                 }
-            } while(choice != 3);
+            } while(choice != 4);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
